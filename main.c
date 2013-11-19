@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    setvbuf(stream_g, NULL, _IONBF, 0);
+    setvbuf(stream_g, NULL, _IOLBF, BUFSIZ);
 
     int sock = bind_socket((argc < 2) ? 4333 : atoi(argv[1]));
 
