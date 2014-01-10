@@ -1,7 +1,7 @@
 CC       ?= gcc
 CFLAGS   += -W -Wall -std=gnu99 -Wextra
 CFLAGS   += -D _XOPEN_SOURCE
-#CFLAGS   += -D LOGS
+CFLAGS   += -D LOGS
 NAME      = mplayer_server
 SRC       = main.c callbacks.c escape.c logs.c
 

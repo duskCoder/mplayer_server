@@ -16,20 +16,20 @@ CB(mute);
 
 extern FILE *stream_g;
 
-typedef struct {
-    int opcode;
-    int (*cb)(const byte *, int);
-} callback_t;
+static callback_t callbacks_g[CALLBACK_COUNT] = {NULL};
 
-static callback_t callbacks_g[] = {
-    {0, callback_load_url},
-    {1, callback_pause},
-    {2, callback_quit},
-    {3, callback_snd_up},
-    {4, callback_snd_down},
-    {5, callback_fullscreen},
-    {6, callback_mute},
-};
+int callbacks_init(void)
+{
+    callbacks_g[CALLBACK_LOAD_URL]      = callback_load_url;
+    callbacks_g[CALLBACK_PAUSE]         = callback_pause;
+    callbacks_g[CALLBACK_QUIT]          = callback_quit;
+    callbacks_g[CALLBACK_SND_DOWN]      = callback_snd_down;
+    callbacks_g[CALLBACK_SND_UP]        = callback_snd_up;
+    callbacks_g[CALLBACK_FULLSCREEN]    = callback_fullscreen;
+    callbacks_g[CALLBACK_MUTE]          = callback_mute;
+
+    return 0;
+}
 
 /*
  * returns a new malloced() null terminated escaped string
@@ -40,10 +40,8 @@ char *real_escape_string(const byte *buf, int size);
 
 void *get_assoc_cb(int opcode)
 {
-    for (size_t i = 0; i < sizeof(callbacks_g) / sizeof(callbacks_g[0]); ++i) {
-        if (callbacks_g[i].opcode == opcode) {
-            return callbacks_g[i].cb;
-        }
+    if (opcode >= 0 && opcode < CALLBACK_COUNT) {
+        return callbacks_g[opcode];
     }
 
     return NULL;

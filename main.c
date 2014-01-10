@@ -13,6 +13,7 @@ FILE *stream_g;
 
 static request_t buffer_g;
 
+int callbacks_init(void);
 void *get_assoc_cb(int opcode);
 
 /* returns a socket listing to port or -1 if something failed */
@@ -80,6 +81,8 @@ int main(int argc, char *argv[])
     setvbuf(stream_g, NULL, _IOLBF, BUFSIZ);
 
     int sock = bind_socket((argc < 2) ? 4333 : atoi(argv[1]));
+
+    callbacks_init();
 
     if (sock >= 0) {
         signal(SIGPIPE, SIG_IGN);

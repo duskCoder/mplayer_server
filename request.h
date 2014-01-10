@@ -1,14 +1,8 @@
 #ifndef REQUEST_H
 #define REQUEST_H
 
-#include <stdint.h>
+#include "pub_callbacks.h"
 
-typedef uint8_t byte;
-
-typedef struct {
-    byte opcode;
-
-    byte data[512];
-} request_t;
+typedef int (*callback_t)(const byte *, int);
 
 #endif /* REQUEST_H */
